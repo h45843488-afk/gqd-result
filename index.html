@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head><meta charset="utf-8"><title>鬼啟動選股</title></head>
+<body>
+  <h1>鬼啟動選股</h1>
+  <div id="out">載入中…</div>
+  <script>
+    fetch("result.json")
+      .then(r => r.json())
+      .then(data => {
+        const out = document.getElementById("out");
+        if (!data || (data.length === 1 && data[0].empty)) {
+          out.innerText = "目前沒有符合標的";
+        } else {
+          out.innerHTML = data.map(d =>
+            `<div>🎯 ${d.code} ${d.name}<br>
+              📌 週期: ${d.signal_periods||""}<br>
+              👉 進場: $${d.entry_price} 停損: $${d.stop_loss} 目標: $${d.take_profit}</div>`
+          ).join("<hr>");
+        }
+      });
+  </script>
+</body>
+</html>
